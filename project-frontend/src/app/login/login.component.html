@@ -1,0 +1,29 @@
+
+<!--
+<form >
+  <div class="form-group">
+    <label>Email:</label>
+    <input type="email" name="email" class="form-control" [(ngModel)]='user.email' />
+  </div>
+
+  <div class="form-group">
+    <label>Password:</label>
+    <input type="password" name="password" class="form-control" [(ngModel)]='user.password' />
+  </div>
+
+  <button type="submit">Login</button>
+</form>
+ -->
+
+<form class="form-signin" (submit)='login()'>
+    <img class="mb-4" src="../../assets/images/registracija.png" 
+    alt="" width="150" height="150">
+    <h1 class="h3 mb-3 font-weight-normal">Prijava</h1>
+    <label for="inputEmail" class="sr-only">Email adaresa</label>
+    <input type="email" id="inputEmail"  name="email" class="form-control" placeholder="Email address"  [(ngModel)]='user.email'  required autofocus/>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password"  [(ngModel)]='user.password' required/>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Prijavi se</button>
+   </form>
+ 

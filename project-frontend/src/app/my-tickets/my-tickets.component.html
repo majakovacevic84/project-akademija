@@ -1,0 +1,76 @@
+
+<div class="container">
+<div class="row">
+   <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+  
+              <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" matSort class='table-hover'>
+
+                  <ng-container matColumnDef="akcija">
+                    <th mat-header-cell *matHeaderCellDef  mat-sort-header> Akcija </th>
+                    <td mat-cell *matCellDef="let element"> {{element.akcija}}  </td>
+                  </ng-container>
+
+                    <!-- Position Column -->
+                  <ng-container matColumnDef="title">
+                      <th mat-header-cell *matHeaderCellDef  mat-sort-header> Naslov </th>
+                      <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                  </ng-container>
+
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef  mat-sort-header> Status </th>
+                    <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                  </ng-container>
+
+                  <!-- Weight Column -->
+                  <ng-container matColumnDef="dodijeljen">
+                    <th mat-header-cell *matHeaderCellDef  mat-sort-header> Odgovoran </th>
+                    <td mat-cell *matCellDef="let element"> {{element.dodijeljen}} </td>
+                  </ng-container>
+
+                  <!-- Symbol Column -->
+                  <ng-container matColumnDef="datum">
+                    <th mat-header-cell *matHeaderCellDef  mat-sort-header> Komentar </th>
+                    <td mat-cell *matCellDef="let element"> {{element.komentar}} </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click) = "myrowClicked(row)"></tr>
+                </table>
+
+                  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+              </div>
+          <br>
+      <button (click)="exportToExcel()" class="btn btn-success">Export to excel</button>         
+
+      <div class="mat-elevation-z8" *ngIf="mySelectedTicket">
+        <div class="card-body">
+             <h3>{{mySelectedTicket.title}}</h3>
+               <hr/>
+                 <p>{{mySelectedTicket.body}}</p>
+                   <br/>
+                      <p><b>Prijavljen: </b>{{mySelectedTicket.datum}}</p>
+                         <div class="form-group">
+                          <label>Dodaj Komentar</label>
+                          <textarea class="form-control" [(ngModel)]='mySelectedTicket.komentar' placeholder="Komentar"> </textarea>
+                        </div>
+                          <button class="btn btn-primary" (click)='mycloseTicket()'>Zatvori</button>
+                             &nbsp;
+                        <!--  <button class="btn btn-danger">Obrisi</button>
+                          &nbsp;-->
+                          <button class="btn btn-success" (click)="insertCommentTicket()">Sacuvaj</button>
+                             &nbsp;
+                          <select name='usr' [(ngModel)]='mySelectedTicket.dodijeljen' >
+                            <option *ngFor='let user of myUsers'>{{user.name}}</option>
+                          </select>
+                            &nbsp;
+                         <button class="btn btn-success  float-right" (click)="complitelyCloseTicket()">Kraj</button>
+             </div>
+           </div>
+        </div>
+    </div>
+</div>
