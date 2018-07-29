@@ -66,7 +66,7 @@ var TicketController = /** @class */ (function () {
     };
     /**************   getTicketById   ******************/
     TicketController.prototype.getTicketById = function (req, res) {
-        Ticket.findById(req.params.ticketId, function (err, result) {
+        Ticket.find({ _id: req.params.ticketId }, function (err, result) {
             if (err) {
                 res.send(err);
             }

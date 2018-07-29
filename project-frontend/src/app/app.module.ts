@@ -17,10 +17,13 @@ import { KvarComponent } from './kvar/kvar.component';
 import { DepesaComponent } from './depesa/depesa.component';
 
 import { CustomMaterialModule } from "./app-routing/material.module";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatPaginatorModule } from '@angular/material';
 
 import { ExcelService } from './services/excell.service';
+import { ToastrModule } from 'ngx-toastr';
+import { ProfileComponent } from './profile/profile.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
@@ -34,8 +37,8 @@ import { ExcelService } from './services/excell.service';
     FileSelectDirective,
     MyTicketsComponent,
     KvarComponent,
-    DepesaComponent
-
+    DepesaComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,11 @@ import { ExcelService } from './services/excell.service';
     ChartsModule,
     CustomMaterialModule,
     BrowserAnimationsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    ToastrModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCaWMhibq11Fby5ZCxs85evRAds2n36ZBM'
+    })
   ],
   providers: [ExcelService],
   bootstrap: [AppComponent]

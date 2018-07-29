@@ -4,6 +4,9 @@ import { Ticket } from '../Ticket';
 import { FormsModule } from '@angular/forms';
 import { FileUploader, FileItem } from 'ng2-file-upload';
 
+import { ToastrService } from 'ngx-toastr';
+
+
 @Component({
   selector: 'app-insert-ticket',
   templateUrl: './insert-ticket.component.html',
@@ -12,60 +15,71 @@ import { FileUploader, FileItem } from 'ng2-file-upload';
 
 export class InsertTicketComponent implements OnInit {
 
-  uploader : FileUploader = new FileUploader({ url: 'http://localhost:3000/upload', itemAlias: 'doc' });
+  uploader: FileUploader = new FileUploader({ url: 'http://localhost:3000/uploads', itemAlias: 'doc' });
   title = '';
   body = '';
   documentPath = '';
-  akcija ='Tiket';
+  akcija = 'Tiket';
   selectedTicket: Ticket = null;
 
-  constructor(private ticketService : TicketService) { }
+  constructor(private ticketService: TicketService, private toastr: ToastrService) { }
 
   ngOnInit() {
+
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; }
-    this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       response = JSON.parse(response);
-      if (response.success){
-        this.insertTicket(response.filename);
+      if (response.success) {
+        this.insertTicket(response.filename)
       }
-    } 
+    }
+
   }
 
-   insertTicket(documentPath:string):void {
 
-    let newTicket : Ticket = new Ticket(undefined, this.title, this.body,documentPath,this.akcija);
+  showSuccess() {
+    this.toastr.success('Uspješno!', 'Uspješan unos tiketa!');
+  };
+
+  showError() {
+    this.toastr.error('Greška!', 'Greška prilikom unosa!');
+  }
+
+
+  insertTicket(documentPath?: string): void {
+    let newTicket: Ticket = new Ticket(undefined, this.title, this.body, this.akcija, documentPath);
     this.ticketService.insertTicket(newTicket)
       .subscribe(result => {
-        if (result && result._id){
-          alert('Tiket je isnertovan!');
-          this.resetFields();  
+        if (result && result._id) {
+          this.showSuccess();
+          this.resetFields();
         }
-        else{
-          alert('Greska prilikom unosa!');
+        else {
+          this.showError();
         }
-        
+
       })
   }
 
-  insertTicket2():void {
-
-    let newTicket : Ticket = new Ticket(undefined, this.title, this.body,undefined,this.akcija);
+  insertTicket2(): void {
+    let newTicket: Ticket = new Ticket(undefined, this.title, this.body, this.akcija, undefined);
     this.ticketService.insertTicket(newTicket)
       .subscribe(result => {
-        if (result.title && result.body && result._id){
-          alert('Tiket je isnertovan!');
-          this.resetFields();  
+        if (result.title && result.body && result._id) {
+          //alert('Tiket je isnertovan!');
+          this.showSuccess();
+          this.resetFields();
         }
-        else{
-          alert('Greska prilikom unosa!');
+        else {
+          this.showError();
         }
-        
       })
   }
 
-  resetFields():void{
+    resetFields(): void {
     this.title = '';
     this.body = '';
+    this.documentPath = '';
   }
 
 }

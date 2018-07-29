@@ -5,4 +5,9 @@ export class User{
     userRole : string;
     expiry : number;
     password : string;
+    datumRodjena: Date;
+    grad : string;
+    picturePath:string;
+
+    constructor() {}
 }

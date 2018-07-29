@@ -1,34 +1,45 @@
+<div class="container bootstrap snippet">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <img class="mb-4" src="../../assets/images/novi_tiket.jpg" alt="" width="300" height="200">
+      <h3> Unos novog tiketa </h3>
 
-<div class="container">
-    <div class="row">
-      <div class="col-md-3"></div>
-      <div class="col-md-6">
-          <img class="mb-4" src="../../assets/images/novi_tiket.jpg" alt=""
-          width="300" height="200">
-      <h1>
-          Unos novog tiketa
-        </h1>
-  <div class="form-group">
-    <label>Naslov tiketa:</label>
-    <input type="text" class="form-control" [(ngModel)]='title' placeholder="Naslov" />
-  </div>
-  
-  <div class="form-group">
-    <label>Opis tiketa:</label>
-    <textarea class="form-control" [(ngModel)]='body' placeholder="Opis tiketa" ></textarea>
-  </div>
-  <div class="custom-file">
-      <input type="file" class="form-control" id="customFile" 
-                         ng2FileSelect [uploader]='uploader'>
-      <label class="custom-file-label" for="customFile">Izaberite fajl</label>
+      <div class="panel-body inf-content">
+        <div class="row">
+          <div class="col-md-10 offset-md-1">
+            <div class="form-group">
+              <br>
+              <label>Naslov tiketa:</label>
+              <input type="text" class="form-control" [(ngModel)]='title' placeholder="Naslov" />
+            </div>
+
+            <div class="form-group">
+              <label>Opis tiketa:</label>
+              <textarea class="form-control" [(ngModel)]='body' placeholder="Opis tiketa"></textarea>
+            </div>
+
+            <div class="form-group">
+              <input type="file" class="form-control" id="customFile" ng2FileSelect [uploader]='uploader'>
+            </div>
+
+            <div *ngIf='uploader.getNotUploadedItems().length'>
+              <button class="btn btn-outline-success btn-lg" (click)='uploader.uploadAll()'>Insert</button>
+            </div>
+            <br>
+
+            <div *ngIf='!uploader.getNotUploadedItems().length'>
+              <button class="btn btn-outline-success btn-lg" (click)='insertTicket2()'> Insert</button>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
     </div>
-  <button class="btn btn-success" (click)='uploader.uploadAll()'
-                                  (click) ='insertTicket2()'> Insert</button>
- </div>
-
- </div>
+  </div>
 </div>
-<br/><br/>
+
+<br/>
+<br/>
 
 
 

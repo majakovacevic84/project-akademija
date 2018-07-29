@@ -51,7 +51,7 @@ const Ticket = mongoose.model('Ticket', TicketSchema);
 
 export class TicketController{
 
-      /**************   addNewTicket   ******************/
+/**************   addNewTicket   ******************/
     public addNewTicket(req:Request, res:Response):void{
         let newTicket = new Ticket(req.body);
         newTicket.save()
@@ -64,7 +64,7 @@ export class TicketController{
     }
 
     
-    /**************   getAllTickets   ******************/
+/**************   getAllTickets   ******************/
     public getAllTickets(req:Request, res:Response){
         Ticket.find({}, (err, result) => {
             if (err){
@@ -75,25 +75,24 @@ export class TicketController{
         })
     }
 
-  /**************   getTicketById   ******************/
+/**************   getTicketById   ******************/
     public getTicketById(req:Request, res:Response){
-        Ticket.findById(req.params.ticketId, (err, result) => {
+            Ticket.find({ _id: req.params.ticketId},  (err, result) => {
             if(err){
                 res.send(err);
             }
-
-            res.json(result);
-        })
+          res.json(result);
+        
+        });
     }
 
 
-  /**************   getTicketByReq   ******************/
+/**************   getTicketByReq   ******************/
     public getTicketByReq(req:Request, res:Response){
         Ticket.find({dodijeljen: req.params.my}, (err, result) => {
             if(err){
                 res.send(err);
             }
-
             res.json(result);
         })
     }
@@ -122,7 +121,7 @@ export class TicketController{
         })
     }
 
-    /**************   Insert novi Komenatar za MyTicket   ******************/
+/**************   Insert novi Komenatar za MyTicket   ******************/
     public insertCommentTicket(req:Request, res:Response){
         Ticket.update({_id: req.params.myTicketId}, { $push: { komentar: req.body.komentar}, $set : {datumPoslednjeIzmjene: Date.now()}}, (err) => {
             if (err){
@@ -136,7 +135,7 @@ export class TicketController{
     }
 
 
-    /**************   Charts  Statusi  ******************/
+/**************   Charts  Statusi  ******************/
     public getPieTicket(req:Request, res:Response){
 
        Ticket.aggregate([{ $group: { _id: "$status", count: { $sum: 1 } } }])
@@ -149,7 +148,7 @@ export class TicketController{
  
 }
 
-    /**************   Charts Akcije   ******************/
+/**************   Charts Akcije   ******************/
     public getPieAkcijaTicket(req:Request, res:Response){
         Ticket.aggregate([{ $group: { _id: "$akcija", count: { $sum: 1 } } }])
         .then((result) => {
@@ -159,5 +158,8 @@ export class TicketController{
          res.send(err);
      })  
  }
+
+
+
 
 }

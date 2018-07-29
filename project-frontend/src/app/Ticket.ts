@@ -8,13 +8,14 @@ export class Ticket {
     dodijeljen:string;
     documentPath:string;
     akcija:string='Tiket';
+    komentar: [{}];
 
-    constructor( _id: string, title:string, body:string,documentPath:string, akcija:string){
+    constructor( _id: string, title:string, body:string, akcija:string,documentPath:string){
         this._id=_id;
         this.title=title;
         this.body=body;
-        this.documentPath=documentPath;
         this.akcija=akcija;
+        this.documentPath=documentPath;
 
     }
 }

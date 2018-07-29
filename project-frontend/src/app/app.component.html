@@ -1,40 +1,46 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" routerLink='/' *ngIf='auth.isLoggedIn()'>CEDIS</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-expand-md navbar-dark" style="background-color: #6c757d">
 
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" routerLink='/dashboard' *ngIf='auth.isAdmin()'>Dashboard<span class="sr-only">(current)</span></a>
-        </li>
+  <a class="navbar-brand" routerLink='/' *ngIf='auth.isLoggedIn()' style="background-color:#dc3545">CEDIS</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-        <li class="nav-item">
-          <a class="nav-link" routerLink='/myTicket' *ngIf='auth.isLoggedIn()'>Moji Zadaci</a>
-        </li>
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink='/dashboard' *ngIf='auth.isAdmin()'>Dashboard
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
 
-        <li class="nav-item dropdown" *ngIf='auth.isAdmin()'>
-          <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" 
-          aria-haspopup="true" aria-expanded="false">Nove akcije</a>
-          <div class="dropdown-menu" aria-labelledby="dropdown01">
-            <a class="dropdown-item" routerLink='/insertdepesa' *ngIf='auth.isAdmin()'>Depesa</a>
-            <a class="dropdown-item" routerLink='/insertKvar' *ngIf='auth.isAdmin()'>Kvar</a>
-            <a class="dropdown-item"  routerLink='/insertTicket' *ngIf='auth.isAdmin()'>Tiket</a>
-          </div>
-        </li>
-      </ul>
-      <ul class="navbar-nav pull-right">
-        <li class="nav-item" >
-          <a class="nav-link" routerLink='/register' *ngIf='!auth.isLoggedIn()'>Register</a>
-        </li>
-        <li class="nav-item" >
-          <a class="nav-link" routerLink='/login' *ngIf='!auth.isLoggedIn()'>Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink='/logout'  href="#" (click)='auth.logout()' *ngIf='auth.isLoggedIn()'>Logout</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+      <li class="nav-item">
+        <a class="nav-link" routerLink='/myTicket' *ngIf='auth.isLoggedIn()'>Moji Zadaci</a>
+      </li>
+
+      <li class="nav-item dropdown" *ngIf='auth.isAdmin()'>
+        <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Nove akcije</a>
+        <div class="dropdown-menu" aria-labelledby="dropdown01">
+          <a class="dropdown-item" routerLink='/insertdepesa' *ngIf='auth.isAdmin()'>Depesa</a>
+          <a class="dropdown-item" routerLink='/insertKvar' *ngIf='auth.isAdmin()'>Kvar</a>
+          <a class="dropdown-item" routerLink='/insertTicket' *ngIf='auth.isAdmin()'>Tiket</a>
+        </div>
+      </li>
+    </ul>
+    <ul class="navbar-nav pull-right">
+      <li class="nav-item">
+        <a class="nav-link" routerLink='/register' *ngIf='!auth.isLoggedIn()'>Register</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink='/profile' *ngIf='auth.isLoggedIn()'>Profil</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink='/login' *ngIf='!auth.isLoggedIn()'>Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink='/logout' href="#" (click)='auth.logout()' *ngIf='auth.isLoggedIn()'>Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 <router-outlet></router-outlet>

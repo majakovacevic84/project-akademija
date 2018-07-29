@@ -11,3 +11,7 @@ table {
     width: 25%;
   }
   
+
+  agm-map {
+  height: 300px;
+}

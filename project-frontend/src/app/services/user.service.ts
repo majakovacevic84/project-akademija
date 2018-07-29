@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of} from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User } from '../User';
 
 @Injectable({
@@ -8,16 +8,29 @@ import { User } from '../User';
 })
 export class UserService {
 
-  userUrl : string ='http://localhost:3000/user'
-  constructor(private http: HttpClient)  { }
+  userUrl: string = 'http://localhost:3000/user';
+  apiUrl: string = 'http://localhost:3000';
+  
 
-getUsers():Observable<User[]>{
-  return this.http.get<User[]>(this.userUrl);
-}
+  constructor(private http: HttpClient) { }
+
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.userUrl);
+  }
+
+
+  getUserByID(_id: string): Observable<User> {
+    return this.http.get<User>(this.userUrl + `/${_id}`);
+  }
+
+  updateUser(currUser: User): Observable<Object> {
+    return this.http.put<Object>(this.userUrl + `/${currUser._id}`, currUser);
+  }
 
 /*
-getUserByID(_id:string):Observable<User>{
-  return this.http.get<User>(this.userUrl + `/${_id}`);
-}
-*/
-}
+  updateUserPass(currUser: User): Observable<Object> {
+    return this.http.put<Object>(this.apiUrl + '/user/updatepass', currUser);
+  }
+  */
+  
+ }

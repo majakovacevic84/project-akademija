@@ -14,6 +14,9 @@ interface IUserModel extends Document{
     setHash(password:string):void;
     validatePassword(password:string):boolean;
     generateJwt():string;
+    datumRodjena: Date;
+    grad : string;
+    picturePath:string;
 }
 
 const UserSchema = new Schema({
@@ -27,8 +30,11 @@ const UserSchema = new Schema({
     salt: String,
     userRole : {
         type: String,
-        default: '3' //admin 1; superuser:2; user:3
-    }  
+        default: '3' //admin 1; user:3
+    } ,
+    datumRodjena: Date,
+    grad : String,
+    picturePath : String
 })
 
 UserSchema.methods.setHash = function(password:string){
@@ -50,6 +56,8 @@ UserSchema.methods.generateJwt = function(){
         email: this.email,
         name: this.name,
         userRole: this.userRole,
+        datumRodjena : this.datumRodjena,
+        grad : this.grad,
         expiry: expiry.getTime()/1000
     }, 'SECRET');
 }
@@ -63,6 +71,9 @@ export class UserController{
         user.email = req.body.email;
         user.name = req.body.name;
         user.userRole = '3';
+        user.datumRodjena = req.body.datumRodjena;
+        user.grad = req.body.grad;
+        user.picturePath = '';
         
         user.setHash(req.body.password);
 
@@ -114,5 +125,28 @@ export class UserController{
         })
     }
 
+    public updateUser(req:Request, res:Response){
+        User.findByIdAndUpdate(req.params.userId, req.body, (err, result) => {
+            if(err){
+                res.send(err);
+            }
+            res.json({success:true});
+        });
 
+    }
+/*
+    public updateUserPassword(req:Request, res:Response){
+        let user = new User();
+         user.setHash(req.body.password);
+         console.log(user.hash , user.salt);
+
+    }
+ */
+    
 }
+
+
+
+
+
+

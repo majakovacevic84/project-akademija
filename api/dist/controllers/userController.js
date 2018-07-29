@@ -19,8 +19,11 @@ var UserSchema = new mongoose_2.Schema({
     salt: String,
     userRole: {
         type: String,
-        default: '3' //admin 1; superuser:2; user:3
-    }
+        default: '3' //admin 1; user:3
+    },
+    datumRodjena: Date,
+    grad: String,
+    picturePath: String
 });
 UserSchema.methods.setHash = function (password) {
     this.salt = crypto_1.default.randomBytes(16).toString('hex');
@@ -38,6 +41,8 @@ UserSchema.methods.generateJwt = function () {
         email: this.email,
         name: this.name,
         userRole: this.userRole,
+        datumRodjena: this.datumRodjena,
+        grad: this.grad,
         expiry: expiry.getTime() / 1000
     }, 'SECRET');
 };
@@ -50,6 +55,9 @@ var UserController = /** @class */ (function () {
         user.email = req.body.email;
         user.name = req.body.name;
         user.userRole = '3';
+        user.datumRodjena = req.body.datumRodjena;
+        user.grad = req.body.grad;
+        user.picturePath = '';
         user.setHash(req.body.password);
         user.save(function (err, user) {
             if (err) {
@@ -90,6 +98,14 @@ var UserController = /** @class */ (function () {
                 res.send(err);
             }
             res.json(result);
+        });
+    };
+    UserController.prototype.updateUser = function (req, res) {
+        exports.User.findByIdAndUpdate(req.params.userId, req.body, function (err, result) {
+            if (err) {
+                res.send(err);
+            }
+            res.json({ success: true });
         });
     };
     return UserController;

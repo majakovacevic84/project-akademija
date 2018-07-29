@@ -9,14 +9,14 @@ import { User } from '../User';
 })
 export class RegisterComponent implements OnInit {
 
- user : User = new User();
+  user: User = new User();
 
-  constructor(private auth : AuthenticationService) { }
+  constructor(private auth: AuthenticationService) { }
 
   ngOnInit() {
   }
 
-  register(){
+  register() {
     this.auth.register(this.user);
   }
 

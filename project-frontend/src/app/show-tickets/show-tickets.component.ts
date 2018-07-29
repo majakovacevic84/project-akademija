@@ -1,4 +1,4 @@
-import { Component, OnInit ,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Ticket } from '../Ticket';
 import { TicketService } from '../services/ticket.service';
 import { UserService } from '../services/user.service';
@@ -11,7 +11,9 @@ import { Kvar } from '../Kvar';
 import { Depesa } from '../Depesa';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Chart } from '../Chart';
- 
+
+import { ToastrService } from 'ngx-toastr';
+
 
 
 @Component({
@@ -22,78 +24,99 @@ import { Chart } from '../Chart';
 
 export class ShowTicketsComponent implements OnInit {
 
-  tickets : Ticket[];
-  users : User[];
+  tickets: Ticket[];
+  users: User[];
   selectedTicket: Ticket = null;
   selectedUser: User = null;
- 
+
   // Pie
 
-   pieCharthelp: any[];
-   pieCharthelp2: any[];
+  pieCharthelp: any[];
+  pieCharthelp2: any[];
 
   pieChartLabels = ['', '', ''];
-  pieChartData = [1,1,1];
+  pieChartData = [1, 1, 1];
 
-   pieChartLabels2 = ['', '', ''];
-   pieChartData2 =[1,2,3] ;
+  pieChartLabels2 = ['', '', ''];
+  pieChartData2 = [1, 1, 1];
 
-   pieChartType: string = 'pie';
+  pieChartType: string = 'pie';
+  isDataAvailable: boolean = false;
+  isDataAvailable2: boolean = false;
 
 
-  docUrl : string = 'http://localhost:3000/uploads/';//ovo je potrebno zbog ts je se poziva na ovaj URL
+  docUrl: string = 'http://localhost:3000/uploads/';//ovo je potrebno zbog ts je se poziva na ovaj URL
 
 
-  constructor(private ticketService: TicketService, private userService : UserService,
-    private kvarService: KvarService, private depesaService : DepeseService) {
-    }
+  constructor(private ticketService: TicketService, private userService: UserService,
+    private kvarService: KvarService, private depesaService: DepeseService, private toastr: ToastrService) {
+  }
 
   ngOnInit() {
-     this.getTickets();
-     this.getUsers();
-     //this.getPieTicket();
 
-     this.ticketService.getTickets()
-     .subscribe( data => { this.dataSource.data = data});
 
-     this.dataSource.paginator = this.paginator;
-     this.dataSource.sort = this.sort;
-               //console.log(this.pieChartData2);
+    this.getTickets();
+    this.getUsers();
+    //this.getPieTicket();
 
-     /****     getPieTickets  *******/        
-      this.ticketService.getPieTickets()
-      .subscribe( data => { 
-        this.pieCharthelp = data; 
-   
-        for(let i = 0; i<this.pieCharthelp.length ; i++)
-        {  
+    this.ticketService.getTickets()
+      .subscribe(data => { this.dataSource.data = data });
+
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    //console.log(this.pieChartData2);
+
+    /****     getPieTickets  *******/
+    this.ticketService.getPieTickets()
+      .subscribe(data => {
+        this.pieCharthelp = data;
+
+        for (let i = 0; i < this.pieCharthelp.length; i++) {
           this.pieChartData2[i] = this.pieCharthelp[i].count;
           this.pieChartLabels2[i] = this.pieCharthelp[i]._id;
-          }
-          //console.log(this.pieChartLabels2);
+        }
+        //console.log(this.pieChartLabels2);
+        this.isDataAvailable2 = true;
+      });
 
-         });
+    /****    getPStatusieTickets  *******/
 
-       /****    getPStatusieTickets  *******/  
+    this.ticketService.getPieStatusTickets()
+      .subscribe(data => {
+        this.pieCharthelp2 = data;
 
-       this.ticketService.getPieStatusTickets()
-       .subscribe( data => { 
-         this.pieCharthelp2 = data; 
-    
-         for(let i = 0; i<this.pieCharthelp2.length ; i++)
-         {  
-           this.pieChartData[i] = this.pieCharthelp2[i].count;
-           this.pieChartLabels[i] = this.pieCharthelp2[i]._id;
-           }
-          // console.log(this.pieChartLabels);
-        });
+        for (let i = 0; i < this.pieCharthelp2.length; i++) {
+          this.pieChartData[i] = this.pieCharthelp2[i].count;
+          this.pieChartLabels[i] = this.pieCharthelp2[i]._id;
+        }
+        this.isDataAvailable = true;
+      });
 
+
+
+  }
+
+  /************** Toastr  *****************/
+  showSuccess() {
+    this.toastr.success('Uspješan unos izmjena!', 'Uspješno!');
+  };
+
+  showSuccessDelete() {
+    this.toastr.success('Uspješno ste izbrisali akciju!', 'Uspješno!');
+  };
+
+  showError() {
+    this.toastr.error('Greška prilikom unosa!', 'Greška!');
+  }
+
+  showWarning() {
+    this.toastr.warning('Izmijenili ste akcije', 'Upozorenje!');
   }
 
   /************************** DATA TABLE *******************/
   displayedColumns: string[] = ['akcija', 'title', 'status', 'dodijeljen', 'datum'];
   //dataSource = new MatTableDataSource();
-  dataSource= new MatTableDataSource<Ticket>();
+  dataSource = new MatTableDataSource<Ticket>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -103,90 +126,84 @@ export class ShowTicketsComponent implements OnInit {
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
+    }
+
   }
-  
-}
 
 
   /******************* tickets ******************/
-  
+
   getTickets() {
     this.ticketService.getTickets()
-    .subscribe(data => {
-     this.tickets=data;
-     //console.log(this.tickets);
-    } )
+      .subscribe(data => {
+        this.tickets = data;
+        //console.log(this.tickets);
+      })
   }
 
-  deleteTicket(){
-    if(confirm('Da li ste sigurni da zelite da izbrisete tiket?')){
-      this.ticketService.deleteTicket(this.selectedTicket._id)
+  deleteTicket() {
+
+    this.ticketService.deleteTicket(this.selectedTicket._id)
       .subscribe(result => {
-        alert('Tiket je izbrisan!');
+        this.showSuccessDelete();
         location.reload();
       })
-    }
+
+
   }
-  
-  updateTicket(){
-     if(confirm('Da li ste sigurni da zelite da sacuvate izmjene?')){
-      if( this.selectedTicket.status=='Novi') { this.selectedTicket.status='Dodijeljen'}
-      this.ticketService.updateTicket(this.selectedTicket)
+
+  updateTicket() {
+
+    if (this.selectedTicket.status == 'Novi') { this.selectedTicket.status = 'Dodijeljen' }
+    this.ticketService.updateTicket(this.selectedTicket)
       .subscribe(
         result => {
-        alert('Tiket je sacuvan!');
-        location.reload();
-      })
-    }
+          this.showSuccess();
+          location.reload();
+        })
+
   }
-  
- selectTicket(ticket:Ticket){
-      this.selectedTicket = ticket;
-    }
-  
-  closeNote(){
-      this.selectedTicket = null;
-    }
+
+  selectTicket(ticket: Ticket) {
+    this.selectedTicket = ticket;
+  }
+
+  closeNote() {
+    this.selectedTicket = null;
+  }
 
   rowClicked(row: any): void {
-      console.log(row);
-      this.selectedTicket = row;
-    }
+    console.log(row);
+    this.selectedTicket = row;
+  }
 
-    complitelyCloseTicket() {
-      /* kada seklikne na ovodugme - potrebno je da se promijeni status u ZATVOREN 
-      a nakon toga da setaj tiket ne mozeizbrisati niti izmijeniti
-      Napraviti funkciju u NODU koja ce damijenja status u ZATVOREN i validciju nad update i ostalim 
-      f-jama da sa tiketimasmiejda se radi samo akonisu ZATVOREN*/
-      this.selectedTicket = null;
-    }
-    
+
   /******************* user ******************/
 
   getUsers() {
-      this.userService.getUsers()
+    this.userService.getUsers()
       .subscribe(data => {
-       this.users=data;
-      } )  
-    }
+        this.users = data;
+      })
+  }
 
-  selectUser(user:User){
-      this.selectedUser = user;
-    }
+  selectUser(user: User) {
+    this.selectedUser = user;
+  }
 
 
   /******************* CHARTS ******************/
 
- 
+
   // events
-  public chartClicked(e:any):void {
+  public chartClicked(e: any): void {
     console.log(e);
   }
- 
-  public chartHovered(e:any):void {
+
+  public chartHovered(e: any): void {
     console.log(e);
   }
 
 
- }
+}
 

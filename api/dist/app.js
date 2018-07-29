@@ -14,11 +14,13 @@ var UserController_2 = require("./controllers/UserController");
 var passport_1 = __importDefault(require("passport"));
 var passport_local_1 = require("passport-local");
 var express_jwt_1 = __importDefault(require("express-jwt"));
+var komentarController_1 = require("./controllers/komentarController");
 var App = /** @class */ (function () {
     function App() {
         this.mongoDbUrl = 'mongodb://localhost:27017/cedisDB';
         this.ticketController = new ticketController_1.TicketController();
         this.userController = new UserController_1.UserController();
+        this.komentarController = new komentarController_1.CommentController();
         this.storage = multer_1.default.diskStorage({
             destination: function (req, file, callback) {
                 //validacija ako je potrebna
@@ -60,7 +62,7 @@ var App = /** @class */ (function () {
             .get(this.ticketController.getPieTicket);
         router.route('/tickets/akcije')
             .get(this.ticketController.getPieAkcijaTicket);
-        router.route('/tickets/:my')
+        router.route('/tickets/me/:my')
             .get(this.ticketController.getTicketByReq);
         router.route('/tickets/moji/:myTicketId')
             .put(this.ticketController.insertCommentTicket);
@@ -68,7 +70,12 @@ var App = /** @class */ (function () {
             .get(this.ticketController.getTicketById)
             .delete(this.ticketController.removeTicket)
             .put(this.ticketController.updateTicket);
-        router.post('/upload', this.upload.single('doc'), function (req, res) {
+        router.route('/comments')
+            .post(this.komentarController.addNewComment)
+            .get(this.komentarController.getComment);
+        router.route('/comments/:id_tiketa')
+            .get(this.komentarController.getCommentbyID);
+        router.post('/uploads', this.upload.single('doc'), function (req, res) {
             if (!req.file) {
                 res.send('Error!');
             }
@@ -80,8 +87,13 @@ var App = /** @class */ (function () {
             }
         });
         router.route('/user').get(this.userController.getAllUsers);
-        router.route('/user/:userId').get(this.userController.getUserById);
-        router.post('/user/register', this.userController.register);
+        router.route('/user/:userId')
+            .get(this.userController.getUserById)
+            .put(this.userController.updateUser);
+        router.route('/user/register')
+            .post(this.userController.register);
+        /* router.route('/user/updatepass')
+             .put(this.userController.updateUserPassword)*/
         router.post('/user/login', this.userController.login);
         this.app.use('/', router);
     };

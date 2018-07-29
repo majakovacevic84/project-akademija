@@ -1,102 +1,93 @@
-
+<br>
+<br>
 <div class="container">
-    <section class="row text-center placeholders">
-        <div class="col-md-1"></div>
-        <div class="col-md-5" style="display: inline-block">
-          <canvas baseChart
-                  [data]="pieChartData"
-                  [labels]="pieChartLabels"
-                  [chartType]="pieChartType"
-                  (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"></canvas>
-        </div>
-        
-            <div class="col-md-5"  style="display: inline-block">
-              <canvas baseChart
-                      [data]="pieChartData2"
-                      [labels]="pieChartLabels2"
-                      [chartType]="pieChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"></canvas>
-            </div> 
-            <div class="col-md-1"></div>
-         </section>
+  <section class="row text-center placeholders">
+    <div class="col-md-1"></div>
+    <div class="col-md-5" style="display: inline-block" *ngIf="isDataAvailable">
+      <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+        (chartClick)="chartClicked($event)"></canvas>
+    </div>
+
+    <div class="col-md-5" style="display: inline-block" *ngIf="isDataAvailable2">
+      <canvas baseChart [data]="pieChartData2" [labels]="pieChartLabels2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+        (chartClick)="chartClicked($event)"></canvas>
+    </div>
+    <div class="col-md-1"></div>
+  </section>
 
   <div class="row">
     <!-- <div class="col-md-1"></div> -->
-      <div class="col-md-10 offset-md-1">
-          <br/>
-          <h3>Detaljan prikaz akcija</h3>
-            <mat-form-field>
-                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-              </mat-form-field>
-              
-              <div class="mat-elevation-z8">
-                <table mat-table [dataSource]="dataSource" matSort class='table-hover'>
-           
-              <ng-container matColumnDef="akcija">
-                <th mat-header-cell *matHeaderCellDef  mat-sort-header> Akcija </th>
-                <td mat-cell *matCellDef="let element"> {{element.akcija}}  </td>
-              </ng-container>
+    <div class="col-md-10 offset-md-1">
+      <br/>
+      <h3 class='bounceIn'>Detaljan prikaz akcija</h3>
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
 
-              <!-- Position Column -->
-              <ng-container matColumnDef="title">
-                <th mat-header-cell *matHeaderCellDef  mat-sort-header> Naslov </th>
-                <td mat-cell *matCellDef="let element"> {{element.title}} </td>
-              </ng-container>
-          
-              <!-- Name Column -->
-              <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef  mat-sort-header> Status </th>
-                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-              </ng-container>
-            
-              <!-- Weight Column -->
-              <ng-container matColumnDef="dodijeljen">
-                <th mat-header-cell *matHeaderCellDef  mat-sort-header> Odgovoran </th>
-                <td mat-cell *matCellDef="let element"> {{element.dodijeljen}} </td>
-              </ng-container>
-            
-              <!-- Symbol Column -->
-              <ng-container matColumnDef="datum">
-                <th mat-header-cell *matHeaderCellDef  mat-sort-header> Datum </th>
-                <td mat-cell *matCellDef="let element"> {{element.datum}} </td>
-              </ng-container>
-            
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click) = "rowClicked(row)"></tr>
-            </table>
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort class='table-hover'>
 
-            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-          </div>
-        
-<div class="mat-elevation-z8" *ngIf="selectedTicket">
-            <div class="card-body">
-                <h3>{{selectedTicket.title}}</h3>
-                <hr/>
-                <p>{{selectedTicket.body}}</p>
-                <br/>
-                <p><b>Prijavljen: </b>{{selectedTicket.datum}}</p>
+          <ng-container matColumnDef="akcija">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Akcija </th>
+            <td mat-cell *matCellDef="let element"> {{element.akcija}} </td>
+          </ng-container>
 
-                <div *ngIf='selectedTicket.documentPath'>
-                  <!-- <img [src]='docUrl + selectedTicket.documentPath' /> -->
-                  <a [href]='docUrl +selectedTicket.documentPath' download>Preuzmite dokument</a>
-                </div>
+          <!-- Position Column -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Naslov </th>
+            <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+          </ng-container>
 
-                    <button class="btn btn-primary" (click)="closeNote()">Zatvori</button>
-                    &nbsp;
-                    <button class="btn btn-danger" (click)='deleteTicket()'>Obrisi</button>
-                    &nbsp;
-                    <select name='usr' [(ngModel)]='selectedTicket.dodijeljen' >
-                      <option *ngFor='let user of users'>{{user.name}}</option>
-                    </select>
-                    &nbsp;
-                    <button class="btn btn-success" (click)='updateTicket()'>Sacuvaj</button>
-                 </div>
-                </div>
-              </div>
-            <!-- <div class="col-md-1"></div> -->
-          </div>
+          <!-- Name Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="dodijeljen">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Odgovoran </th>
+            <td mat-cell *matCellDef="let element"> {{element.dodijeljen}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="datum">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Datum </th>
+            <td mat-cell *matCellDef="let element"> {{element.datum}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="rowClicked(row)"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
       </div>
 
+      <div class="mat-elevation-z8" *ngIf="selectedTicket">
+        <div class="card-body">
+          <h3>{{selectedTicket.title}}</h3>
+          <hr/>
+          <p>{{selectedTicket.body}}</p>
+          <br/>
+          <p>
+            <b>Prijavljen: </b>{{selectedTicket.datum}}</p>
 
+          <div *ngIf='selectedTicket.documentPath'>
+            <a [href]='docUrl +selectedTicket.documentPath' download target="_blank">Preuzmite pridruzeni dokument</a>
+          </div>
+
+          <button class="btn btn-outline-primary" (click)="closeNote()">Zatvori</button>
+          &nbsp;
+          <button class="btn btn-outline-danger" (click)='deleteTicket()' [disabled]="selectedTicket.status=='Zavrsen'">Obrisi</button>
+          &nbsp;
+          <select name='usr' [(ngModel)]='selectedTicket.dodijeljen' [disabled]="selectedTicket.status=='Zavrsen'">
+            <option *ngFor='let user of users'>{{user.name}}</option>
+          </select>
+          &nbsp;
+          <button class="btn btn-outline-success" (click)='updateTicket()' [disabled]="selectedTicket.status=='Zavrsen'">Sacuvaj</button>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-1"></div> -->
+  </div>
+</div>

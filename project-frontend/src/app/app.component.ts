@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 import { AuthenticationService } from './services/authentication.service';
 
 
@@ -10,5 +10,6 @@ import { AuthenticationService } from './services/authentication.service';
 export class AppComponent {
   title = 'app';
 
-  constructor (private auth: AuthenticationService) {}
+  constructor(private auth: AuthenticationService) {
+  }
 }

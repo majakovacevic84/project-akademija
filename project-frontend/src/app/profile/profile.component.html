@@ -1,0 +1,125 @@
+<br>
+<br>
+<div class="container bootstrap snippet" *ngIf='valid'>
+    <div class="panel-body inf-content">
+        <div class="row">
+            <div class="col-md-4">
+                <img alt="" style="width:600px;" title="" class="img-circle img-thumbnail isTooltip" [src]="docUrl + meUser.picturePath"
+                    download data-original-title="Usuario">
+                <div class='container'>
+                    <div class='row'>
+                        <div class="col-md-6">
+                            <div id='upload_button'>
+                                <br>
+                                <label>
+                                    <input type="file" ng2FileSelect [uploader]='uploader'>
+                                    <span class="btn btn-outline-info btn-lg">Izmjena slike</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <br>
+                            <div *ngIf='uploader.getNotUploadedItems().length'>
+                                <button class="btn btn-outline-info btn-lg" (click)='uploader.uploadAll()'>Upload</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <br>
+                <div class="table-responsive">
+                    <table class="table table-condensed table-responsive table-user-information">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <span class="glyphicon glyphicon-user  text-primary"></span> Ime </strong>
+                                </td>
+                                <td class="text-primary">{{meUser.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <span class="glyphicon glyphicon-cloud text-primary"></span>
+                                        Email
+                                    </strong>
+                                </td>
+                                <td class="text-primary">
+                                    {{meUser.email}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                        Role
+                                    </strong>
+                                </td>
+                                <td class="text-primary">
+                                    {{meUser.userRole}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <span class="glyphicon glyphicon-envelope text-primary"></span>
+                                        Grad
+                                    </strong>
+                                </td>
+                                <td class="text-primary">
+                                    {{meUser.grad}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <span class="glyphicon glyphicon-calendar text-primary"></span>
+                                        Datum Rodjenja
+                                    </strong>
+                                </td>
+                                <td class="text-primary">
+                                    {{meUser.datumRodjena}}
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-2">
+               <br>
+                <!-- <button class="btn btn-link" (click)='passFunction()'>Izmjena passworda </button> -->
+            </div>
+
+        </div>
+    </div>
+</div>
+<br>
+<br>
+ <!-- <div class="container bootstrap snippet" *ngIf='changePass'>
+    <div class="panel-body inf-content">
+        <div class="row">
+            <div class="col-md-10 offset-md-2">
+                <br>
+             
+                <div class="table-responsive">
+
+                    <form class="form-inline">
+                        <div class="form-group mb-2">
+                            <label for="staticEmail2" class="sr-only">Ime</label>
+                            <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value= {{meUser.password}}>
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="inputPassword2" class="sr-only">Password</label>
+                            <input type="password" class="form-control" id="inputPassword2" placeholder="Password" [(ngModel)]='meUser.password' name="password">
+                        </div>
+                        <button type="submit" class="btn btn-outline-info btn-sm mb-2" (click)='updateUserPass()'>Promijeni password</button>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  -->

@@ -9,14 +9,14 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class LoginComponent implements OnInit {
 
-  user : User = new User();
+  user: User = new User();
 
-  constructor(private auth:AuthenticationService) { }
+  constructor(private auth: AuthenticationService) { }
 
   ngOnInit() {
   }
 
-  login(){
+  login() {
     // poziv servisa
     this.auth.login(this.user);
   }
